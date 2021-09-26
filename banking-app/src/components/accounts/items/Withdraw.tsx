@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   FormGroup,
   InputGroup,
@@ -8,8 +8,13 @@ import {
   ButtonToolbar,
   FormCheck,
 } from "react-bootstrap";
+import { balanceActions } from "stores/actions";
+import { useDispatch } from "react-redux";
 
 function Withdraw() {
+  const { withdraw, deposit, account, amount } = balanceActions;
+  const dispatch = useDispatch();
+
   return (
     <div>
       <FormGroup>
@@ -17,27 +22,32 @@ function Withdraw() {
           <Col xs={3}>
             <InputGroup>
               <Button variant="outline-secondary">$</Button>
-              <FormControl type="number" onChange={(e) => console.log(e)} />
+              <FormControl
+                type="number"
+                onChange={(e) => dispatch(amount(e.target.value))}
+              />
             </InputGroup>
           </Col>
         </Col>
 
         <Col xs={6}>
           <ButtonToolbar>
-            <Button onClick={() => null}>Withdraw</Button>
-            <Button onClick={() => null}>Deposit</Button>
+            <Button onClick={() => dispatch(withdraw())}>Withdraw</Button>
+            <Button onClick={() => dispatch(deposit())}>Deposit</Button>
             <FormGroup>
               <FormCheck
                 type="radio"
                 name="account"
                 label="Checking"
-                onChange={() => null}
+                onChange={() => dispatch(account("checking"))}
+                inline
               />
               <FormCheck
                 type="radio"
                 name="account"
                 label="Savings"
-                onChange={() => null}
+                onChange={() => dispatch(account("savings"))}
+                inline
               />
             </FormGroup>
           </ButtonToolbar>
